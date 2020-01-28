@@ -76,7 +76,8 @@ float             edgeBottomRightY                    = worldHeight;
 HVirtualCoupling  s;
 
 /* ground*/
-FBox ground;
+FBox obs1;
+FBox obs2;
 PImage bg;
 /* end elements definition *********************************************************************************************/
 
@@ -86,7 +87,7 @@ void setup() {
 
   /* screen size definition */
   size(1000, 400);
-  bg = loadImage("img/1.jpg");
+  bg = loadImage("img/forestfloor.jpg");
 
   /* device setup */
 
@@ -120,20 +121,25 @@ void setup() {
   world               = new FWorld();
 
 
-  /* Setup ground */
-  ground = new FBox(worldWidth, 1);
-  ground.setPosition(worldWidth/2, worldHeight*2/3);
-  ground.setRotation(3);
-  ground.setFill(0, 0, 0);
-  ground.setStatic(true);
-  world.add(ground);
+  /* Setup obstacles */
+  obs1 = new FBox(3, 2);
+  obs2 = new FBox(2, 1);
+  obs1.setPosition(worldWidth*1/3, worldHeight*1/3);
+  obs2.setPosition(worldWidth-5, 2);
+  obs1.setRotation(3);
+  obs1.setFill(0, 0, 0);
+  obs2.setFill(0 ,0, 0);
+  obs1.setStatic(true);
+  obs2.setStatic(true);
+  world.add(obs1);
+  world.add(obs2);
 
 
   /* Setup the Virtual Coupling Contact Rendering Technique */
   s                   = new HVirtualCoupling((1)); 
   s.h_avatar.setDensity(2); 
   s.h_avatar.setFill(255, 255, 255); 
-  s.init(world, worldWidth/2, 2); 
+  s.init(world, edgeTopLeftX+worldWidth/2, edgeTopLeftY+2); 
 
   /* World conditions setup */
   world.setGravity((0.0), (300.0)); //1000 cm/(s^2)
@@ -182,7 +188,7 @@ class SimulationThread implements Runnable {
       pos_ee.set(pos_ee.copy().mult(200));
     }
 
-    s.setToolPosition((pos_ee).x, (pos_ee).y+7); 
+    s.setToolPosition(edgeTopLeftX+worldWidth/2-(pos_ee).x+2, edgeTopLeftY+(pos_ee).y-7); 
     s.updateCouplingForce();
     f_ee.set(-s.getVCforceX(), s.getVCforceY());
     f_ee.div(20000); //
