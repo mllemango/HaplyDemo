@@ -74,11 +74,17 @@ float             edgeBottomRightY                    = worldHeight;
 
 /* Initialization of virtual tool */
 HVirtualCoupling  s;
+PImage            haply_avatar;
 
 /* ground*/
 FBox obs1;
 FBox obs2;
 PImage bg;
+
+/* background shapes */
+FBox square_light;
+FBox square_dense;
+
 /* end elements definition *********************************************************************************************/
 
 /* setup section *******************************************************************************************************/
@@ -136,9 +142,13 @@ void setup() {
 
 
   /* Setup the Virtual Coupling Contact Rendering Technique */
-  s                   = new HVirtualCoupling((1)); 
-  s.h_avatar.setDensity(2); 
-  s.h_avatar.setFill(255, 255, 255); 
+  haply_avatar = loadImage("img/dungbeetle_cut.png"); 
+  haply_avatar.resize((int)(hAPI_Fisica.worldToScreen(2)), (int)(hAPI_Fisica.worldToScreen(2)));
+  s                   = new HVirtualCoupling((0.5)); 
+  s.h_avatar.attachImage(haply_avatar); 
+  s.h_avatar.setSize(0.5);
+  s.h_avatar.setDensity(400); 
+  s.h_avatar.setFill(255, 255, 255);
   s.init(world, edgeTopLeftX+worldWidth/2, edgeTopLeftY+2); 
 
   /* World conditions setup */
@@ -146,6 +156,24 @@ void setup() {
   world.setEdges((edgeTopLeftX), (edgeTopLeftY), (edgeBottomRightX), (edgeBottomRightY)); 
   world.setEdgesRestitution(.4);
   world.setEdgesFriction(0.5);
+  
+  square_light = new FBox(12.5,9);
+  square_light.setPosition(3*worldWidth/4, worldHeight/2);
+  square_light.setFill(0, 0, 0, 0);
+  square_light.setDensity(100);
+  square_light.setSensor(true);
+  square_light.setNoStroke();
+  square_light.setStatic(true);
+  world.add(square_light);
+  
+  square_dense = new FBox(12.5,9);
+  square_dense.setPosition(1*worldWidth/4, worldHeight/2);
+  square_dense.setFill(0, 0, 0, 0);
+  square_dense.setDensity(100);
+  square_dense.setSensor(true);
+  square_dense.setNoStroke();
+  square_dense.setStatic(true);
+  world.add(square_dense);
 
   world.draw();
 
@@ -187,12 +215,22 @@ class SimulationThread implements Runnable {
       pos_ee.set(widgetOne.get_device_position(angles.array()));
       pos_ee.set(pos_ee.copy().mult(200));
     }
+    //println(pos_ee);
 
     s.setToolPosition(edgeTopLeftX+worldWidth/2-(pos_ee).x+2, edgeTopLeftY+(pos_ee).y-7); 
     s.updateCouplingForce();
     f_ee.set(-s.getVCforceX(), s.getVCforceY());
     f_ee.div(20000); //
-
+    
+    if (s.h_avatar.isTouchingBody(square_light)){
+      s.h_avatar.setDamping(10);
+      s.h_avatar.setHapticStiffness(25000);
+      //println("inside square light");
+    } else{
+      s.h_avatar.setDamping(350);
+      s.h_avatar.setHapticStiffness(25000);
+      //println("inside square dense");
+    }
     torques.set(widgetOne.set_device_torques(f_ee.array()));
     widgetOne.device_write_torques();
 
