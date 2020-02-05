@@ -81,6 +81,7 @@ float             check2                              =0;
 HVirtualCoupling  s;
 PImage            haply_avatar;
 PImage eagle;
+PImage home;
 /* ground*/
 FBox obs1;
 FBox obs2;
@@ -92,6 +93,7 @@ FBox obs_2;
 FBox obs_3;
 FBox obs_4;
 FBox obs_5;
+FBox beet;
 
 /* background shapes */
 PImage img;
@@ -163,13 +165,19 @@ void setup() {
   obs2.setWidth(0.5);
   obs2.setPosition(worldWidth-5, -2);
   obs2.setVelocity(0,0.00001);
-  obs2.setDamping(300);
+  obs2.setDamping(200);
   obs2.setFill(0, 0, 0);
   obs2.setFriction(1000);
   obs2.setDensity(1000);
   obs2.setForce(0,3000);
   world.add(obs2);
   
+  home = loadImage("img/fembeet.png");
+  beet = new FBox(3,3);
+  beet.attachImage(home);
+  beet.setPosition(worldWidth-2,8);
+  beet.setStatic(true);
+  world.add(beet);
   
    obs3 = new FBox(1, 5);
  // obs1.attachImage(loadImage("img/maze.png"));
@@ -328,7 +336,7 @@ class SimulationThread implements Runnable {
     /* Set up up and down obstacle*/
     
   
-    if (obs2.getY() > 6) {
+    if (obs2.getY() > 8) {
       obs2.setPosition(worldWidth-5, 0);
       obs2.setVelocity(0,-0.00001);
     }

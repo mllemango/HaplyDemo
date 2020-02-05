@@ -79,6 +79,7 @@ PImage            haply_avatar;
 /* ground*/
 FBox obs1;
 FBox obs2;
+FCircle ball;
 PImage bg;
 
 /* background shapes */
@@ -127,6 +128,15 @@ void setup() {
   world               = new FWorld();
 
 
+
+// Ball
+
+  ball = new FCircle(1);
+  ball.setPosition(edgeTopLeftX+worldWidth/2, edgeTopLeftY+2);
+  ball.setFill(150,75,0);
+  ball.setDamping(600);
+  world.add(ball);
+  
   /* Setup obstacles */
   obs1 = new FBox(3, 2);
   obs2 = new FBox(2, 1);
@@ -137,6 +147,7 @@ void setup() {
   obs2.setFill(0 ,0, 0);
   obs1.setStatic(true);
   obs2.setStatic(true);
+  
   world.add(obs1);
   world.add(obs2);
 
@@ -224,10 +235,12 @@ class SimulationThread implements Runnable {
     
     if (s.h_avatar.isTouchingBody(square_light)){
       s.h_avatar.setDamping(10);
+      ball.setDamping(10);
       s.h_avatar.setHapticStiffness(25000);
       //println("inside square light");
     } else{
       s.h_avatar.setDamping(350);
+      ball.setDamping(350);
       s.h_avatar.setHapticStiffness(25000);
       //println("inside square dense");
     }
