@@ -328,7 +328,7 @@ class SimulationThread implements Runnable {
     /* Set up up and down obstacle*/
     
   
-    if (obs2.getY() > 6) {
+    if (obs2.getY() > 8) {
       obs2.setPosition(worldWidth-5, 0);
       obs2.setVelocity(0,-0.00001);
     }
