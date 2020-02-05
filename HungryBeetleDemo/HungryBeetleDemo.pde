@@ -101,7 +101,7 @@ void setup() {
   /* put setup code here, run once: */
 
   /* screen size definition */
-  size(700, 280);
+  size(1000, 400);
   img = loadImage("img/forest.jpeg");
   background(img);
   /* device setup */
@@ -151,13 +151,12 @@ void setup() {
   obs2.setPosition(worldWidth-5, 1);
   obs3.setPosition(worldWidth-13, 8);
   obs1.setVelocity(0,0.01);
-  obs1.setDamping(10);
   obs2.setVelocity(0,0.01);
   obs1.setRotation(3);
   obs2.setRotation(3);
-  //obs1.setFill(0, 0, 0);
-  //obs2.setFill(0 ,0, 0);
- // obs3.setFill(0 ,0, 0);
+  obs1.setFill(0, 0, 0);
+  obs2.setFill(0 ,0, 0);
+  obs3.setFill(0 ,0, 0);
   obs1.setStatic(false);
   obs2.setStatic(false);
   obs3.setStatic(true);
@@ -280,17 +279,33 @@ class SimulationThread implements Runnable {
       obs1.setVelocity(0,0.02);
     } */
     
+
+    if (obs1.isTouchingBody(obs3) && obs1.getY() < 6){
+      //check2 = 1;
+      //obs2.setDensity(5);
+      obs1.setStatic(true);
+      obs1.dettachImage();
+      obs1.setNoFill();
+      obs1.setNoStroke();
+      obs1.setStatic(true);
+      //obs2.attachImage(loadImage("img/leafb.png"));
+    }else{
+      if (obs1.getY() > 7) {
+      obs1.setPosition(worldWidth*1/5, 1);
+      obs1.setVelocity(0,0.02);
+      }  
+    }
+    
     
     if (obs2.isTouchingBody(obs3) && obs2.getY() < 6){
-      print(obs2.getY());
+      //print(obs2.getY());
       //check1 = 1;
       //obs1.setDensity(5);
-       //obs2.setDamping(500);
        obs2.setStatic(true);
        obs2.dettachImage();
        obs2.setNoFill();
        obs2.setNoStroke();
-       //obs1.attachImage(loadImage("img/leafb.png"));
+      //obs1.attachImage(loadImage("img/leafb.png"));
     }else{
      if (obs2.getY() > 8.2 ) {
       obs2.setPosition(worldWidth-5, 1);
