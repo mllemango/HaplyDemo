@@ -60,7 +60,7 @@ float             pixelsPerCentimeter                 = 40.0;
 /* joint space */
 PVector           angles                              = new PVector(0, 0);
 PVector           torques                             = new PVector(0, 0);
-
+color edge;
 /* task space */
 PVector           pos_ee                              = new PVector(0, 0);
 PVector           f_ee                                = new PVector(0, 0); 
@@ -166,7 +166,7 @@ void setup() {
   obs2.setPosition(worldWidth-5, -2);
   obs2.setVelocity(0,0.00001);
   obs2.setDamping(200);
-  obs2.setFill(0, 0, 0);
+  obs2.setFill(128, 128, 0);
   obs2.setFriction(1000);
   obs2.setDensity(1000);
   obs2.setForce(0,3000);
@@ -182,7 +182,7 @@ void setup() {
    obs3 = new FBox(1, 5);
  // obs1.attachImage(loadImage("img/maze.png"));
   obs3.setPosition(worldWidth-5, 9);
-  obs3.setFill(0, 0, 0);
+  obs3.setFill(107, 142, 35);
   
   obs3.setVelocity(0,0.007);
   obs3.setStatic(true);
@@ -191,14 +191,14 @@ void setup() {
    obs1 = new FBox(1, 8);
  // obs1.attachImage(loadImage("img/maze.png"));
   obs1.setPosition(worldWidth-8, 8);
-  obs1.setFill(0, 0, 0);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
   
   obs1 = new FBox(1, 10);
  // obs1.attachImage(loadImage("img/maze.png"));
   obs1.setPosition(worldWidth-11, 2);
-  obs1.setFill(0, 0, 0);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
   
@@ -207,15 +207,15 @@ void setup() {
   
    obs1 = new FBox(1, 8);
  // obs1.attachImage(loadImage("img/maze.png"));
-  obs1.setPosition(worldWidth-22, 2);
-  obs1.setFill(0, 0, 0);
+  obs1.setPosition(worldWidth-22, 2.5);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
   
   obs1 = new FBox(1, 4);
   //obs1.attachImage(loadImage("img/maze.png"));
   obs1.setPosition(worldWidth-20, 8);
-  obs1.setFill(0, 0, 0);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
   obs1.isHaptic();
@@ -223,7 +223,7 @@ void setup() {
   obs1 = new FBox(1, 3);
  // obs1.attachImage(loadImage("img/maze.png"));
   obs1.setPosition(worldWidth-20, 2);
-  obs1.setFill(0, 0, 0);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
   
@@ -241,7 +241,7 @@ void setup() {
   obs_2.addTorque(1);
   obs_2.setRestitution(0.5);
   obs_2.setFriction(0.5);
-  obs_2.setDensity(2);
+  obs_2.setDensity(1000);
  // obs1.setVelocity(0,0);
   world.add(obs_2);
   
@@ -261,6 +261,8 @@ void setup() {
   world.setEdges((edgeTopLeftX), (edgeTopLeftY), (edgeBottomRightX), (edgeBottomRightY)); 
   world.setEdgesRestitution(.5);
   world.setEdgesFriction(0.5);
+  edge = color(128,128,0);
+  world.setEdges(edge);
   
 /*  square_light = new FBox(12.5,9);
   square_light.setPosition(3*worldWidth/4, worldHeight/2);
