@@ -230,7 +230,7 @@ void setup() {
   obs1 = new FBox(1, 9);
  // obs1.attachImage(loadImage("img/maze.png"));
   obs1.setPosition(worldWidth-17, 8);
-  obs1.setFill(0, 0, 0);
+  obs1.setFill(128, 128, 0);
   obs1.setStatic(true);
   world.add(obs1);
 
